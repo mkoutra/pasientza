@@ -2,6 +2,8 @@
 # Rank: A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
 # Suits: c-clubs (♣), d-diamonds (♦), h-hearts (♥) and s-spades (♠)
 
+import random
+
 class CardColor:
     """Card Color"""
 
@@ -24,7 +26,7 @@ class CardColor:
 class Card:
     """Card representation"""
     _suitToSymbol = {'c': '♣', 'd': '♦', 'h': '♥', 's': '♠'}
-    _possible_ranks = [str(i) for i in range(2, 11)] + ['J', 'Q', 'K', 'A']
+    _allRanks = [str(i) for i in range(2, 11)] + ['J', 'Q', 'K', 'A']
 
     def __init__(self, rank:str, suit:str):
         self.set_rank(rank)
@@ -35,7 +37,7 @@ class Card:
 
     # -------------- Setters -------------- 
     def set_rank(self, rank:str):
-        if rank.upper() in Card._possible_ranks:
+        if rank.upper() in Card._allRanks:
             self._rank = rank
         else:
             raise Exception("Invalid card rank.")
@@ -50,7 +52,7 @@ class Card:
             self._value = 10
         elif (self._rank == 'A'):
             self._value = 1
-        elif (self._rank in Card._possible_ranks[:9]):
+        elif (self._rank in Card._allRanks[:9]):
             self._value = int(self._rank)
         else:
             raise Exception("Invalid value.")
@@ -74,14 +76,75 @@ class Card:
     def symbol(self)->str: return self._symbol
 
     def __str__(self) -> str:
-        return '|' + self.rank() + "" + self.symbol() + '|'
+        return '(' + self.rank() + "" + self.symbol() + ')'
 
     def __eq__(self, other):
         if isinstance(other, Card):
             return (self.rank() == other.rank() and self.suit() == self.suit())
         else: raise Exception("Invalid Card comparison.")
 
+# TODO
+# 1. Add counter to measure the cards,
+# 2. Resolve push + restore issue
+class Deck:
+    """ A normal deck of 52 cards """
+    
+    def __init__(self):
+        self._deckCards:list = [] # Cards on the deck
+        self._removedCards:list = [] # Cards no longer on the deck
+
+        # Fill deck with the 52 cards
+        for suit in Card._suitToSymbol.keys():
+            for rank in Card._allRanks:
+                self.push(rank, suit)
+        
+        # Shuffle deck
+        self.shuffle()
+        
+    def contains(self, rank, suit) -> bool:
+        """
+        Returns true if card with rank rank and suit suit is inside the deck
+        """
+        for card in self._deckCards:
+            if (card.rank() == rank and card.suit() == suit):
+                return True
+        return False
+    
+    def push(self, rank:str, suit:str):
+        """ Place a card with rank rank and suit suit at the top of the deck. """
+        
+        if (self.contains(rank, suit) == False):
+            self._deckCards.append(Card(rank,  suit))
+        else:
+            raise Exception("Card already inside deck.")
+
+    def pop(self):
+        """ Removes and returns a card from the top of the deck. """
+        if self._deckCards: # Checks if deck has cards
+            popped_card = self._deckCards.pop()
+            self._removedCards.append(popped_card)
+            return popped_card
+
+        return None
+
+    def shuffle(self):
+        """ Shuffle the deck cards. """
+        random.shuffle(self._deckCards)
+
+    def restore(self):
+        """Bring deck back to its original condition with 52 cards."""
+        self._deckCards += self._removedCards[::-1]
+        
+    def __str__(self):
+        s = ""
+        for i in range(len(self._deckCards)):
+            if ((i != 0) and (i % 13 == 0)): s += '\n'
+            s += str(self._deckCards[i]) + " "
+        return s
+
+
 if __name__ == "__main__":
+    print(10*'-', "Testing", 10*'-')
     c1 = Card('A', 'h')
     c2 = Card('3', 'd')
 
@@ -92,3 +155,25 @@ if __name__ == "__main__":
 
     if (c1.color() == c2.color()): print("Same color\n")
     else: print("Not same color")
+
+    deck1 = Deck()
+    print(deck1)
+
+    deck1.shuffle()
+    print('\n')
+    print(deck1)
+
+    for _ in range(51): deck1.pop()
+
+    print("\n")
+    print(deck1)
+
+    deck1.push("4", 's')
+
+    deck1.restore()
+    print("\n")
+    print(deck1)
+
+    deck1.shuffle()
+    print("\n")
+    print(deck1)
