@@ -1,14 +1,5 @@
-import random
+import os
 
-a = [i for i in range(45)]
+card_names = os.listdir("./card_imgs")
 
-# random.shuffle(a)
-b = []
-
-for i in range(5): b.append(a.pop())
-
-print("a = ", a, "\n\nb = ", b)
-
-a += b[::-1]
-
-print ("\n\n\n",a)
+print(card_names[3], card_names[7], card_names[7])
