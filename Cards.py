@@ -75,6 +75,8 @@ class Card:
     def value(self)->int: return self._value
     def symbol(self)->str: return self._symbol
 
+    def id(self)->str: return f"{self._rank}{self._suit}"
+
     def __str__(self) -> str:
         return '(' + self.rank() + "" + self.symbol() + ')'
 
@@ -87,11 +89,12 @@ class Card:
 # 1. Add counter to measure the cards,
 # 2. Resolve push + restore issue
 class Deck:
-    """ A normal deck of 52 cards """
+    """ A regular card deck of 52 cards """
     
     def __init__(self):
-        self._deckCards:list = [] # Cards on the deck
-        self._removedCards:list = [] # Cards no longer on the deck
+        self._deckCards:list = []       # Cards on the deck
+        self._removedCards:list = []    # Cards no longer on the deck
+        self._nCards = 0                # Number of cards on the deck
 
         # Fill deck with the 52 cards
         for suit in Card._suitToSymbol.keys():
@@ -113,16 +116,18 @@ class Deck:
     def push(self, rank:str, suit:str):
         """ Place a card with rank rank and suit suit at the top of the deck. """
         
-        if (self.contains(rank, suit) == False):
+        if (self._nCards < 52 and self.contains(rank, suit) == False):
             self._deckCards.append(Card(rank,  suit))
+            self._nCards += 1
         else:
-            raise Exception("Card already inside deck.")
+            raise Exception(f"Card {rank, suit} already inside deck.")
 
     def pop(self):
         """ Removes and returns a card from the top of the deck. """
         if self._deckCards: # Checks if deck has cards
             popped_card = self._deckCards.pop()
             self._removedCards.append(popped_card)
+            self._nCards -= 1
             return popped_card
 
         return None
@@ -133,8 +138,22 @@ class Deck:
 
     def restore(self):
         """Bring deck back to its original condition with 52 cards."""
-        self._deckCards += self._removedCards[::-1]
-        
+        if (len(self._deckCards) + len(self._removedCards) != 52):
+            raise Exception("Can't go back to original deck.")
+        else:
+            self._nCards = len(self._deckCards) + len(self._removedCards)
+            self._deckCards += self._removedCards[::-1]
+            self._removedCards.clear()
+
+    def isEmpty(self)->bool:
+        """Checks if the deck is empty."""
+        if (self._nCards == 0): return True
+        return False
+
+    def nCards(self):
+        """Returns the number of cards inside the deck."""
+        return self._nCards
+
     def __str__(self):
         s = ""
         for i in range(len(self._deckCards)):
@@ -142,38 +161,40 @@ class Deck:
             s += str(self._deckCards[i]) + " "
         return s
 
-
 if __name__ == "__main__":
     print(10*'-', "Testing", 10*'-')
     c1 = Card('A', 'h')
     c2 = Card('3', 'd')
 
     print(c1, c2)
-
+    print("Id = ", c2.id())
     print("Same cards") if (c1 == c2) else print("Not same cards")
     print(c1.color(), c1.rank(), c1.suit(), c1.value(), c1.symbol())
 
     if (c1.color() == c2.color()): print("Same color\n")
     else: print("Not same color")
 
+    print("Initial Deck")
     deck1 = Deck()
     print(deck1)
 
-    deck1.shuffle()
-    print('\n')
-    print(deck1)
-
+    print("\nPop the first 51 cards")
     for _ in range(51): deck1.pop()
 
-    print("\n")
     print(deck1)
 
-    deck1.push("4", 's')
+    print("\nPop the last card")
+    deck1.pop()
 
+    print(deck1)
+    
+    if (deck1.isEmpty()): print("Empty", deck1.nCards())
+    else: print("Non empty")
+    
+    #deck1.push("4", 's')
+
+    print("\nRestore")
     deck1.restore()
-    print("\n")
     print(deck1)
 
-    deck1.shuffle()
-    print("\n")
-    print(deck1)
+    print("Number of cards", deck1.nCards())

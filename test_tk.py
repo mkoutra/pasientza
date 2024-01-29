@@ -51,7 +51,7 @@ card_fnames = os.listdir("./card_imgs")
 #     # ---------------------------------------
 #     label_img.pack()
 
-# ----------------------------------------------
+# ---------------------------------------------
 # ------------ Add button for next card --------
 # ----------------------------------------------
 
@@ -78,4 +78,5 @@ button_single_card = tk.Button(master = window,
                                text= "Next Card",
                                command = foo)
 button_single_card.pack()
+
 window.mainloop()
