@@ -80,29 +80,27 @@ class Card:
     def __str__(self) -> str:
         return '(' + self.rank() + "" + self.symbol() + ')'
 
+    def __repr__(self) -> str:
+        return self.id()
+
     def __eq__(self, other):
         if isinstance(other, Card):
             return (self.rank() == other.rank() and self.suit() == self.suit())
         else: raise Exception("Invalid Card comparison.")
 
-# TODO
-# 1. Add counter to measure the cards,
-# 2. Resolve push + restore issue
+
 class Deck:
     """ A regular card deck of 52 cards """
     
-    def __init__(self):
+    def __init__(self, full = True):
+        """full: optional, True if deck contains 52 cards"""
         self._deckCards:list = []       # Cards on the deck
         self._removedCards:list = []    # Cards no longer on the deck
         self._nCards = 0                # Number of cards on the deck
-
-        # Fill deck with the 52 cards
-        for suit in Card._suitToSymbol.keys():
-            for rank in Card._allRanks:
-                self.push(rank, suit)
         
-        # Shuffle deck
-        self.shuffle()
+        if (full):
+            self.fill()                 # Fill deck with the 52 cards
+            self.shuffle()              # Shuffle deck
         
     def contains(self, rank, suit) -> bool:
         """
@@ -113,7 +111,7 @@ class Deck:
                 return True
         return False
     
-    def push(self, rank:str, suit:str):
+    def push(self, rank:str, suit:str) -> None:
         """ Place a card with rank rank and suit suit at the top of the deck. """
         
         if (self._nCards < 52 and self.contains(rank, suit) == False):
@@ -122,7 +120,7 @@ class Deck:
         else:
             raise Exception(f"Card {rank, suit} already inside deck.")
 
-    def pop(self):
+    def pop(self) -> Card:
         """ Removes and returns a card from the top of the deck. """
         if self._deckCards: # Checks if deck has cards
             popped_card = self._deckCards.pop()
@@ -134,7 +132,20 @@ class Deck:
 
     def shuffle(self):
         """ Shuffle the deck cards. """
-        random.shuffle(self._deckCards)
+        if (self._nCards > 0):
+            random.shuffle(self._deckCards)
+
+    def fill(self):
+        """Fill a deck with 52 cards"""
+        for suit in Card._suitToSymbol.keys():
+            for rank in Card._allRanks:
+                self.push(rank, suit)
+
+    def empty(self):
+        """Remove all cards from deck"""
+        self._deckCards = []
+        self._removedCards = []
+        self._nCards = 0
 
     def restore(self):
         """Bring deck back to its original condition with 52 cards."""
@@ -160,6 +171,10 @@ class Deck:
             if ((i != 0) and (i % 13 == 0)): s += '\n'
             s += str(self._deckCards[i]) + " "
         return s
+
+    def __getitem__(self, x:int) -> Card:
+        if isinstance(x, slice) or (x >= 0 and x < self._nCards):
+            return self._deckCards[x]
 
 if __name__ == "__main__":
     print(10*'-', "Testing", 10*'-')

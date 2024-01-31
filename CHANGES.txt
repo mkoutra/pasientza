@@ -1,0 +1,3 @@
+In Cards.py:
+    - In Deck class:
+        - __getitem__() added to make deck subscriptable

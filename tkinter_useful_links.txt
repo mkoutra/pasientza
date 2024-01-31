@@ -1,6 +1,0 @@
-Multiple Windows with Tkinter (tk.TopLevel())
-- https://stackoverflow.com/questions/43552320/can-i-open-two-tkinter-windows-at-the-same-time
-- https://www.geeksforgeeks.org/python-tkinter-toplevel-widget/
-- https://www.pythontutorial.net/tkinter/tkinter-toplevel/
-- Note: (1) There can be only one root window, and one root.mainloop().
-        (2) If you close the root, you close them all.

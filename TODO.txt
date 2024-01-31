@@ -1,0 +1,4 @@
+- Improve __getitem__ in Deck class to take care of slices.
+  (https://stackoverflow.com/questions/70827335/how-to-implement-the-lazy-slicing-of-a-class-instance)
+
+- Change init of Deck to cover empty deck option
