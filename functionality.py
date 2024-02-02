@@ -1,5 +1,6 @@
 # Checking basic functionality of Pasientza
 from Cards import Card, Deck
+import copy
 
 # A list with the eight stacks
 all_stacks = [[] for _ in range(8)]
@@ -12,34 +13,44 @@ def triplet(d:Deck) -> list:
         triple.append(card)
     return triple
 
-deck = Deck()
-# TODO soros must be of Deck Type with no cards
-# __eq__() method probably
+deck = Deck()               # Normal deck
+soros = Deck(full = False)  # Create empty deck
 
-soros:list = []
+# Remove the first 45 cards from the deck to simplify testing
+for _ in range(45): card = deck.pop()
 
-# Remove the first 45 cards from the deck
-for _ in range(45): deck.pop()
-
-print(deck,"\n")
+print("Deck", deck, "\n")
+print("Soros", soros, "\n")
 
 while (not deck.isEmpty()):
     for _  in range(3):
         card = deck.pop()
+
         if (not isinstance(card, Card)):
             print("End of deck")
             break
         else:
-            soros.append(card)
+            soros.push(card.rank(), card.suit())
             
+    print("Deck", deck)
     print("Soros = ", soros)
-    
-    # Take user input
-    while (True):
+
+    # Take user input.
+    # It stops asking user for input in two cases:
+    # (1): Soros gets empty
+    # (2): User does not want to remove a card from soros
+    while (not soros.isEmpty()):
         user_pick = int(input("#: "))
-        if (user_pick >= 0 and user_pick < 8):
+
+        if 0 <= user_pick < 8:
             all_stacks[user_pick].append(soros.pop())
             print("Soros = ", soros)
+            print("Deck", deck)
         else: break
+
+    if (deck.isEmpty()):
+        print("Kalimera")
+        deck = copy.deepcopy(soros)
+        soros.empty()
 
 print(all_stacks)

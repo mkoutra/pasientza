@@ -10,3 +10,42 @@ I'm trying to save some of the stuff I've learned while doing this.
 - __repr__() vs __str__()
   - Python uses the __repr__ method to determine what to
     put in the spot in the list.
+
+- Shallow vs Deep copy:
+  - https://thepythoncodingbook.com/2022/08/10/shallow-and-deep-copy-in-python/
+  
+  - https://note.nkmk.me/en/python-copy-deepcopy/
+  
+  - https://www.oreilly.com/library/view/python-in-a/0596001886/re123.html
+  
+  - From ChatGpt:
+    "Here's a general guideline:
+
+    If your class has no nested objects or references to other objects, and you only need shallow copying, you can define only __copy__.
+
+    If your class has nested objects and you want to support both shallow and deep copying, define both __copy__ and __deepcopy__. If __deepcopy__ is not present, copy will fall back to using __copy__ for shallow copies.
+
+    If your class has complex internal structures and you want to control the copying behavior in detail, define both methods to provide explicit copying logic for both shallow and deep scenarios.
+
+    Remember to consider the specific needs and structure of your class when deciding which methods to implement."
+  
+  - Also from ChatGpt:
+    Q: If a __deepcopy__ does not exist will the copy.deepcopy()  call the __copy__ ?
+    Answer:
+
+    Yes, if __deepcopy__ is not defined for a class, the copy.deepcopy() function will fall back to using the __copy__ method if it is present.
+
+    Here's the order of priority that deepcopy follows:
+      - If the class has a __deepcopy__ method, it will be used to create the deep copy.
+      - If there's no __deepcopy__ method, but there is a __copy__ method, __copy__ will be used for a shallow copy, and the process will continue recursively for nested objects.
+      - If neither __deepcopy__ nor __copy__ is defined, deepcopy will use other methods, such as __reduce__, to achieve copying.
+
+    So, if you have a __deepcopy__ method, that will take precedence. If it's not present, but a __copy__ method is, it will be used for creating the deep copy.
+
+    In your Card class, if you have both __deepcopy__ and __copy__ methods, deepcopy will preferentially use the __deepcopy__ method. If it's not present, it will use the __copy__ method for creating a shallow copy during the deep copy process.
+
+- About any() built-in function: https://www.w3schools.com/python/ref_func_any.asp
+
+- Naming Conventions in python:
+  - https://peps.python.org/pep-0008/
+  - https://visualgit.readthedocs.io/en/latest/pages/naming_convention.html

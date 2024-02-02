@@ -3,24 +3,29 @@
 # Suits: c-clubs (♣), d-diamonds (♦), h-hearts (♥) and s-spades (♠)
 
 import random
+import copy         
 
 class CardColor:
     """Card Color"""
 
-    def __init__(self, c):
-        if (c.lower() == 'r' or c.lower() == "red"):   self._color = 0
-        elif (c.lower() == 'b' or c.lower() == "black"): self._color = 1
+    def __init__(self, c:str):
+        self.c = c.lower()
+        if (self.c == 'r' or self.c == "red"):   self._color = 0
+        elif (self.c == 'b' or self.c == "black"): self._color = 1
         else: raise Exception("Invalid CardColor.")
     
     def __eq__(self, other):
         if isinstance(other, CardColor):
             return self._color == other._color
-        else: raise Exception("Invalid comparison.")
+        else: raise TypeError("Invalid comparison.")
     
     def __str__(self):
         if (self._color == 0): return "Red"
         elif (self._color == 1): return "Black"
         else: raise Exception("Invalid color")
+    
+    def __copy__(self):
+        return CardColor(self.c) 
     
 
 class Card:
@@ -85,8 +90,11 @@ class Card:
 
     def __eq__(self, other):
         if isinstance(other, Card):
-            return (self.rank() == other.rank() and self.suit() == self.suit())
+            return ((self.rank() == other.rank()) and (self.suit() == other.suit()))
         else: raise Exception("Invalid Card comparison.")
+    
+    def __copy__(self):
+        return Card(self.rank(), self.suit())
 
 
 class Deck:
@@ -112,8 +120,7 @@ class Deck:
         return False
     
     def push(self, rank:str, suit:str) -> None:
-        """ Place a card with rank rank and suit suit at the top of the deck. """
-        
+        """ Place a card at the top of the deck. """
         if (self._nCards < 52 and self.contains(rank, suit) == False):
             self._deckCards.append(Card(rank,  suit))
             self._nCards += 1
@@ -175,6 +182,21 @@ class Deck:
     def __getitem__(self, x:int) -> Card:
         if isinstance(x, slice) or (x >= 0 and x < self._nCards):
             return self._deckCards[x]
+    
+    def __copy__(self):
+        copy_instance = Deck(full = False)
+        copy_instance._deckCards = self._deckCards.copy()
+        copy_instance._removedCards = self._removedCards.copy()
+        copy_instance._nCards = self._nCards
+        return copy_instance
+    
+    def __deepcopy__(self, memo):
+        copy_instance = Deck(full = False)
+        copy_instance._deckCards = copy.deepcopy(self._deckCards)
+        copy_instance._removedCards = copy.deepcopy(self._removedCards)
+        copy_instance._nCards = self._nCards
+        return copy_instance
+
 
 if __name__ == "__main__":
     print(10*'-', "Testing", 10*'-')

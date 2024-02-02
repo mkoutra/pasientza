@@ -1,4 +1,16 @@
 - Improve __getitem__ in Deck class to take care of slices.
   (https://stackoverflow.com/questions/70827335/how-to-implement-the-lazy-slicing-of-a-class-instance)
 
-- Change init of Deck to cover empty deck option
+- Improve Card class to the more acceptable suit inputs.
+  For example "h" or "hearts" or "Hearts" etc.
+
+- Simplify contains method: Instead of iterating through the deck, 
+  you can use the any function with a generator expression for a more 
+  concise implementation:
+
+  def contains(self, rank, suit) -> bool:
+    return any(card.rank() == rank and card.suit() == suit for card in self._deckCards)
+
+- Fix naming conventions
+- In Card class improve methods. Make some of them "private"
+- In Card class maybe rename id() method

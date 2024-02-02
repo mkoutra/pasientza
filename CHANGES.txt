@@ -1,3 +1,17 @@
-In Cards.py:
-    - In Deck class:
-        - __getitem__() added to make deck subscriptable
+01/02/2024
+- In functionality.py
+  - Change functionality.py to use a Deck() object for soros.
+  - Also I changed the way to read the user input.
+  - functionality seems to work fine.
+02/02/2024
+- In Cards.py:
+  - CardColor class:
+    - Added a self.c variable to save the color in str.
+    - A __copy__ method was added.
+    - In the __eq__(), raise a TypeError instead of an Exception.
+  - Card class:
+    - Added a __copy__ method
+    - Fix bug in  __eq__():
+      self.suit() == self.suit() to self.suit() == other.suit()
+  - Deck class:
+    - __copy__() and __deepcopy__() methods were implemented.
