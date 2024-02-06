@@ -49,3 +49,9 @@ I'm trying to save some of the stuff I've learned while doing this.
 - Naming Conventions in python:
   - https://peps.python.org/pep-0008/
   - https://visualgit.readthedocs.io/en/latest/pages/naming_convention.html
+
+- Path files in python
+  - https://medium.com/@ageitgey/python-3-quick-tip-the-easy-way-to-deal-with-file-paths-on-windows-mac-and-linux-11a072b58d5f
+
+- Canvas widget in tkinter
+  - https://www.geeksforgeeks.org/python-tkinter-canvas-widget/

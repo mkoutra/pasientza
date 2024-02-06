@@ -121,6 +121,7 @@ class Deck:
     
     def push(self, rank:str, suit:str) -> None:
         """ Place a card at the top of the deck. """
+        
         if (self._nCards < 52 and self.contains(rank, suit) == False):
             self._deckCards.append(Card(rank,  suit))
             self._nCards += 1
