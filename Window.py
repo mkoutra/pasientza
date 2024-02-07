@@ -6,7 +6,7 @@ from PIL import Image, ImageTk
 class GameWindow:
     def __init__(self):
         #TODO make arguments optional
-        self._dimensions = (960, 600)
+        self._dimensions = (1024, 600)
         self._background = "green"
         self._title = "Pasientza"
         self.img_folder = "card_imgs"
@@ -29,17 +29,19 @@ class GameWindow:
         lbl.grid(row = row, column = col, padx = 5, pady = 5)
 
     def draw_deck(self):
-        image = find_card(os.path.join(self.img_folder, "2c.png"))
-        canvas = tk.Canvas(self._root, width = image.width(), height = image.height())
-        canvas.grid(row = 0, column = 0, padx = 10)
-        canvas.image = image
-        # Set the overlap distance (adjust as needed)
-        overlap_x = 0
-        overlap_y = 40
-        
-        # Call the function to overlap and display images
-        for i in range(12):
-            overlap_images(canvas, image, i, overlap_x, overlap_y)
+        """It prints 8 columns of 13 cards overlapping in a column"""
+        image = find_card(os.path.join(self.img_folder, "As.png"))
+        for j in range(8):
+            canvas = tk.Canvas(self._root, width = image.width(), height = image.height(), bg="green")
+            canvas.grid(row = 0, column = j, padx = 10)
+            canvas.image = image
+            # Set the overlap distance (adjust as needed)
+            overlap_x = 0
+            overlap_y = 35
+            
+            # Call the function to overlap and display images
+            for i in range(13):
+                overlap_images(canvas, image, i, overlap_x, overlap_y)
 
     def draw(self):
         """Draw window"""
@@ -79,5 +81,5 @@ if __name__ == "__main__":
     win = GameWindow()
 
     win.draw_deck()
-
+    win.draw_card("3s.png", 0, 0)
     win.draw()

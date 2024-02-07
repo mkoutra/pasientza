@@ -14,3 +14,5 @@
 - Fix naming conventions
 - In Card class improve methods. Make some of them "private"
 - In Card class maybe rename id() method
+
+- Change how push works in SuitDeck. replace int(rank)

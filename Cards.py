@@ -34,41 +34,41 @@ class Card:
     _allRanks = [str(i) for i in range(2, 11)] + ['J', 'Q', 'K', 'A']
 
     def __init__(self, rank:str, suit:str):
-        self.set_rank(rank)
-        self.set_suit(suit)
-        self.set_value()
-        self.set_color()
-        self.set_symbol()
+        self._set_rank(rank)
+        self._set_suit(suit)
+        self._set_value()
+        self._set_color()
+        self._set_symbol()
 
     # -------------- Setters -------------- 
-    def set_rank(self, rank:str):
+    def _set_rank(self, rank:str):
         if rank.upper() in Card._allRanks:
             self._rank = rank
         else:
             raise Exception("Invalid card rank.")
 
-    def set_suit(self, suit:str):
+    def _set_suit(self, suit:str):
         if suit.lower() in Card._suitToSymbol.keys():
             self._suit = suit
         else: raise Exception("Invalid suit.")
 
-    def set_value(self):
-        if self._rank in "JQK":
-            self._value = 10
-        elif (self._rank == 'A'):
-            self._value = 1
-        elif (self._rank in Card._allRanks[:9]):
+    def _set_value(self):
+        figures = {'A': 1, 'J': 11, 'Q': 12, 'K': 13}
+
+        if (self._rank in Card._allRanks[:9]):
             self._value = int(self._rank)
+        elif (self._rank in figures):
+            self._value = figures[self._rank]
         else:
             raise Exception("Invalid value.")
 
-    def set_color(self):
+    def _set_color(self):
         if (self._suit in ['c', 's']):
             self._color = CardColor('black')
         elif (self._suit in ['h', 'd']):
             self._color = CardColor('red')
 
-    def set_symbol(self):
+    def _set_symbol(self):
         if (self._suit in Card._suitToSymbol.keys()):
             self._symbol = Card._suitToSymbol[self._suit]
         else: raise Exception("Invalid symbol.")
@@ -173,6 +173,11 @@ class Deck:
         """Returns the number of cards inside the deck."""
         return self._nCards
 
+    def top(self) -> Card:
+        """Returns the top card of the deck, otherwise None"""
+        if (self.isEmpty()): return None
+        else: return self._deckCards[-1]
+
     def __str__(self):
         s = ""
         for i in range(len(self._deckCards)):
@@ -198,41 +203,87 @@ class Deck:
         copy_instance._nCards = self._nCards
         return copy_instance
 
+class SuitDeck(Deck):
+    """A specific kind of deck used to store cards only of the same suit."""
+    def __init__(self, suit = ""):
+        super().__init__(full = False)
+        self._set_suit(suit)
+        
+    def push(self, rank:str, suit:str):
+        # Full deck
+        if (self.isFull()):
+            raise Exception("SuitDeck is empty")
+        
+        # Initially empty deck
+        if (self.isEmpty()):
+            self._suit = suit
+            self._deckCards.append(Card(rank,  suit))
+            self._nCards += 1
+            return 1
+
+        # Wrong suit
+        if (self._suit != suit):
+            raise Exception("Trying to push invalid suit")
+
+        # Insert card if it is in the correct order
+        if (abs(self.top().value() - int(rank)) == 1):
+            self._deckCards.append(Card(rank,  suit))
+            self._nCards += 1
+        else:
+            print()
+            raise Exception(f"Card {rank, suit} not in correct order.")
+            
+    def _set_suit(self, suit:str):
+        if (suit == "" or suit.lower() in Card._suitToSymbol.keys()):
+            self._suit = suit
+        else:
+            raise AttributeError(f"suit '{suit}' does not exist.")
+    
+    def isFull(self):
+        if (self.nCards() == 13): return True
+        return False
+    
 
 if __name__ == "__main__":
-    print(10*'-', "Testing", 10*'-')
-    c1 = Card('A', 'h')
-    c2 = Card('3', 'd')
+    # print(10*'-', "Testing", 10*'-')
+    # c1 = Card('A', 'h')
+    # c2 = Card('3', 'd')
 
-    print(c1, c2)
-    print("Id = ", c2.id())
-    print("Same cards") if (c1 == c2) else print("Not same cards")
-    print(c1.color(), c1.rank(), c1.suit(), c1.value(), c1.symbol())
+    # print(c1, c2)
+    # print("Id = ", c2.id())
+    # print("Same cards") if (c1 == c2) else print("Not same cards")
+    # print(c1.color(), c1.rank(), c1.suit(), c1.value(), c1.symbol())
 
-    if (c1.color() == c2.color()): print("Same color\n")
-    else: print("Not same color")
+    # if (c1.color() == c2.color()): print("Same color\n")
+    # else: print("Not same color")
 
-    print("Initial Deck")
-    deck1 = Deck()
-    print(deck1)
+    # print("Initial Deck")
+    # deck1 = Deck()
+    # print(deck1)
 
-    print("\nPop the first 51 cards")
-    for _ in range(51): deck1.pop()
+    # print("\nPop the first 51 cards")
+    # for _ in range(51): deck1.pop()
 
-    print(deck1)
+    # print(deck1)
 
-    print("\nPop the last card")
-    deck1.pop()
+    # print("\nPop the last card")
+    # deck1.pop()
 
-    print(deck1)
+    # print(deck1)
     
-    if (deck1.isEmpty()): print("Empty", deck1.nCards())
-    else: print("Non empty")
+    # if (deck1.isEmpty()): print("Empty", deck1.nCards())
+    # else: print("Non empty")
     
-    #deck1.push("4", 's')
+    # #deck1.push("4", 's')
 
-    print("\nRestore")
-    deck1.restore()
-    print(deck1)
+    # print("\nRestore")
+    # deck1.restore()
+    # print(deck1)
 
-    print("Number of cards", deck1.nCards())
+    # print("Number of cards", deck1.nCards())
+    specific_deck = SuitDeck()
+    specific_deck.push('4', 'c')
+    specific_deck.push('3', 'c')
+    print(specific_deck._deckCards)
+
+    print(specific_deck.nCards())

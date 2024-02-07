@@ -15,4 +15,14 @@
       self.suit() == self.suit() to self.suit() == other.suit()
   - Deck class:
     - __copy__() and __deepcopy__() methods were implemented.
-03/02/2024
+08/02/2024
+- In Cards.py:
+  - class SuitDeck created
+  - class Card:
+    - rename setter methods with underscore.
+    - change _set_value().
+      Now J -> 11, Q -> 12 and K -> 13.
+      This change was necessary for easier implementation 
+      of the push() method in SuitDeck. 
+  - class Deck updated:
+    - top() method added.
