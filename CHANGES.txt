@@ -26,3 +26,9 @@
       of the push() method in SuitDeck. 
   - class Deck updated:
     - top() method added.
+09/02/2024
+- test2.py and test_path.py deleted 
+- In Cards.py:
+  - SuitDeck: completed:
+  - Card class: __repr__() added to
+- In functionality.py

@@ -129,7 +129,7 @@ class Deck:
             raise Exception(f"Card {rank, suit} already inside deck.")
 
     def pop(self) -> Card:
-        """ Removes and returns a card from the top of the deck. """
+        """ Removes and returns a card from the top of the deck, else None"""
         if self._deckCards: # Checks if deck has cards
             popped_card = self._deckCards.pop()
             self._removedCards.append(popped_card)
@@ -178,7 +178,19 @@ class Deck:
         if (self.isEmpty()): return None
         else: return self._deckCards[-1]
 
+    def inverse(self) -> None:
+        """Inverse the order of cards."""
+        # self._deckCards = self._deckCards[::-1]
+        self._deckCards.reverse() 
+
     def __str__(self):
+        s = ""
+        for i in range(len(self._deckCards)):
+            if ((i != 0) and (i % 13 == 0)): s += '\n'
+            s += str(self._deckCards[i]) + " "
+        return s
+
+    def __repr__(self):
         s = ""
         for i in range(len(self._deckCards)):
             if ((i != 0) and (i % 13 == 0)): s += '\n'
@@ -210,27 +222,31 @@ class SuitDeck(Deck):
         self._set_suit(suit)
         
     def push(self, rank:str, suit:str):
-        # Full deck
+        # Deck is full
         if (self.isFull()):
             raise Exception("SuitDeck is empty")
         
-        # Initially empty deck
+        # Initially empty deck. Insert card only if it is K or A.
         if (self.isEmpty()):
-            self._suit = suit
-            self._deckCards.append(Card(rank,  suit))
-            self._nCards += 1
-            return 1
-
+            if (rank.upper() == 'K' or rank.upper() == 'A'):
+                self._suit = suit
+                self._deckCards.append(Card(rank,  suit))
+                self._nCards += 1
+                return
+            else: raise Exception(f"SuitDeck can't begin with {rank}")
+        
         # Wrong suit
         if (self._suit != suit):
-            raise Exception("Trying to push invalid suit")
+            raise Exception("Invalid suit")
 
-        # Insert card if it is in the correct order
-        if (abs(self.top().value() - int(rank)) == 1):
-            self._deckCards.append(Card(rank,  suit))
+        # New card to insert on the deck
+        new_card = Card(rank, suit)
+
+        # Insert card only if it is in the correct order
+        if (abs(self.top().value() - new_card.value()) == 1):
+            self._deckCards.append(new_card)
             self._nCards += 1
         else:
-            print()
             raise Exception(f"Card {rank, suit} not in correct order.")
             
     def _set_suit(self, suit:str):
@@ -282,8 +298,9 @@ if __name__ == "__main__":
 
     # print("Number of cards", deck1.nCards())
     specific_deck = SuitDeck()
-    specific_deck.push('4', 'c')
-    specific_deck.push('3', 'c')
+    specific_deck.push('K', 'c')
+    specific_deck.push('Q', 'c')
+    specific_deck.push('11', 'c')
     print(specific_deck._deckCards)
 
     print(specific_deck.nCards())

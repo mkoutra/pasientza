@@ -133,10 +133,7 @@ shuffle_button.pack(pady=20)
 card_button = Button(root, text="Get Cards", font=("Helvetica", 14), command=deal_cards)
 card_button.pack(pady=20)
 
-
-
 # Shuffle Deck On Start
 shuffle()
-
 
 root.mainloop()
