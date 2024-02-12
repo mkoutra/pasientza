@@ -55,3 +55,6 @@ I'm trying to save some of the stuff I've learned while doing this.
 
 - Canvas widget in tkinter
   - https://www.geeksforgeeks.org/python-tkinter-canvas-widget/
+
+- Geometry manangers in tkinter (Sticky used in grid)
+  https://www.studytonight.com/tkinter/python-tkinter-geometry-manager

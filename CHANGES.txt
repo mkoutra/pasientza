@@ -27,8 +27,13 @@
   - class Deck updated:
     - top() method added.
 09/02/2024
-- test2.py and test_path.py deleted 
+- test2.py and test_path.py were deleted 
 - In Cards.py:
-  - SuitDeck: completed:
-  - Card class: __repr__() added to
-- In functionality.py
+  - SuitDeck: completed
+  - Deck class:
+    - __repr__() added
+    - inverse() added
+- functionality.py works without graphics
+11/02/2024
+Progress on Window class.
+  Use of anchor keyword, sticky 

@@ -13,3 +13,9 @@
 
 - Fix naming conventions
 - In Card class maybe rename id() method
+
+Make some arguments optional in the Window class.
+
+Fix image folder name in Window class.
+Take care of i in overlap image
+improve draw_card method of window class
