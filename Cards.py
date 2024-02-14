@@ -1,9 +1,10 @@
-# Classes related to the card and deck
+# Classes related to playing cards and deck.
 # Rank: A, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K
 # Suits: c-clubs (♣), d-diamonds (♦), h-hearts (♥) and s-spades (♠)
 
 import random
-import copy         
+import copy
+from typing import List
 
 class CardColor:
     """Card Color"""
@@ -183,6 +184,12 @@ class Deck:
         # self._deckCards = self._deckCards[::-1]
         self._deckCards.reverse() 
 
+    def first_cards(self, n:int) -> List[Card]:
+        """Returns a list with the first n cards of the deck"""
+        if (n < 0):
+            raise AttributeError("Argument must be positive.")
+        return self._deckCards[:-n-1:-1]
+    
     def __str__(self):
         s = ""
         for i in range(len(self._deckCards)):

@@ -3,6 +3,7 @@
   - Change functionality.py to use a Deck() object for soros.
   - Also I changed the way to read the user input.
   - functionality seems to work fine.
+------------------------------------------------------------------  
 02/02/2024
 - In Cards.py:
   - CardColor class:
@@ -15,6 +16,7 @@
       self.suit() == self.suit() to self.suit() == other.suit()
   - Deck class:
     - __copy__() and __deepcopy__() methods were implemented.
+------------------------------------------------------------------
 08/02/2024
 - In Cards.py:
   - class SuitDeck created
@@ -26,6 +28,7 @@
       of the push() method in SuitDeck. 
   - class Deck updated:
     - top() method added.
+------------------------------------------------------------------
 09/02/2024
 - test2.py and test_path.py were deleted 
 - In Cards.py:
@@ -34,6 +37,17 @@
     - __repr__() added
     - inverse() added
 - functionality.py works without graphics
+------------------------------------------------------------------
 11/02/2024
-Progress on Window class.
-  Use of anchor keyword, sticky 
+- Progress on Window class.
+  - Use of anchor keyword, sticky
+------------------------------------------------------------------
+14/02/2024
+- In Cards.py:
+  - first_cards() created
+- In Windoes.py:
+  - overlap_image modified
+  - draw_card_in_SuitDeck() renamed to draw_suitDeck_card()
+  - draw_card() deleted
+  - Shuffle button tests with self.__deck 
+------------------------------------------------------------------
