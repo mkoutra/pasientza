@@ -58,3 +58,7 @@
     soros where we need to print the top three elements in reverse order
     BE VERY CAREFUL WITH THE ORDER OF THE CARDS
   - Add Buttons and Button commands
+  ---------------------------------
+  - Made Deck a button.
+  - Change draw_suitDeck_card
+  - find_card() deleted

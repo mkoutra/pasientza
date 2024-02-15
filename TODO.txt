@@ -27,3 +27,7 @@ Change top in deck to take input an integer and return the first n.
 WRITE DOCUMENTATION AND EXPLANATIONS ABOUT THE ORDER OF THE CARDS
 
 Rename empty to makeempty() in Deck
+
+how to make window resizable, dynamic
+
+UNDO button

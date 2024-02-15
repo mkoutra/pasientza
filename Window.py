@@ -14,19 +14,15 @@ class GameWindow:
         print("Initial Deck\n", self.__deck)
         self.__soros = Deck(full = False)   # Cards removed from deck
         self.__suit_decks:list = [SuitDeck() for _ in range(8)]
-        self.__suit_decks_sizes:list = [-1 for _ in range(8)] # Number of cards in suitDecks
 
         # Window configuration
-        self._win_dimensions = (1024, 800)
-        # self._background = "darkgreen"
+        self._win_dimensions = (980, 650)
         self._background = "seagreen4"
         self._title = "Pasientza"
 
         self._card_img_folder = os.path.join("imgs", "card_imgs")
-        self._card_dimensions = (100, 130)  # Card configuration
-        self._card_images:dict = {}         # Card id, i.e. "10s" to card image
-
-        self._all_SuitDeck_canvas:list = [] # SuitDeck canvas
+        self._card_dimensions = (100, 130)
+        self._card_images:dict = {} # Card id, e.g. "10s" to image
 
         # Create root window
         self._root = tk.Tk()
@@ -39,55 +35,69 @@ class GameWindow:
         self._suitDecks_frame = tk.Frame(master = self._root, bg = self._background)
         self._deck_frame = tk.Frame(master = self._root, bg = self._background)
         self._soros_cards_frame = tk.Frame(master = self._root, bg = self._background)
+        self._suitDecks_button_frame = tk.Frame(master = self._root, bg = self._background)
 
         # Place frames on the root window
-        self._suitDecks_frame.place(relx = 0, rely = 0.02, anchor = tk.NW)
-        self._deck_frame.place(relx = 0, rely = .75, anchor = tk.NW)
-        self._soros_cards_frame.place(relx = .2, rely = .75, anchor = tk.NW)
+        self._suitDecks_button_frame.place(relx = 0, rely = 0.02, anchor = tk.NW)
+        self._suitDecks_frame.place(relx = 0.0, rely = 0.08, anchor = tk.NW)
+        self._deck_frame.place(relx = 0.4, rely = .75, anchor = tk.NW)
+        self._soros_cards_frame.place(relx = 0.4 + .15, rely = .75, anchor = tk.NW)
 
         self._load_cards(dim = self._card_dimensions) # Load Playing Cards
 
         # Create the 8 SuitDecks with Blank Images and place them on frame.
+        self._all_SuitDeck_canvas:list = [] # SuitDeck canvas
+
+        # for i in range(8):
+        #     canv = tk.Canvas(master = self._suitDecks_frame,
+        #                      width = self._card_dimensions[0],
+        #                      height = self._card_dimensions[1])
+        #     canv.grid(row = 0, column = i, padx = 10, sticky=tk.NW)
+        #     canv.create_image(0, 0, anchor = tk.NW, 
+        #                       image = self._card_images["Blank"])
+            
+        #     self._all_SuitDeck_canvas.append(canv)
+
         for i in range(8):
-            canv = tk.Canvas(master = self._suitDecks_frame,
+            fr = tk.Frame(master = self._suitDecks_frame, bg = self._background)
+            fr.grid(row = 0, column = i, padx = 10, sticky=tk.NW)            
+
+            but = tk.Button(master = fr,
+                text = "Deck " + str(i + 1),
+                width = 8, height = 1,
+                command = lambda x = i : self._pick_suitDeck_callback(x))
+            but.pack()
+            
+            canv = tk.Canvas(master = fr,
                              width = self._card_dimensions[0],
                              height = self._card_dimensions[1])
-            canv.grid(row = 0, column = i, padx = 10, sticky=tk.NW)
+            canv.pack()
             canv.create_image(0, 0, anchor = tk.NW, 
                               image = self._card_images["Blank"])
-            
             self._all_SuitDeck_canvas.append(canv)
-        
-        # Draw deck
-        # self.deck_canvas = tk.Canvas(master = self._deck_frame,
-                                # width = self._card_dimensions[0],
-                                # height = self._card_dimensions[1])
-        # self.deck_canvas.pack(padx = 10)
-        # self.deck_canvas.create_image(0, 0, anchor = tk.NW,
-                                #  image = self._card_images["Blue"])
 
+
+        # Create Deck Button
         self._deck_button = tk.Button(master = self._deck_frame,
                                       image = self._card_images["Blue"],
                                       relief = tk.RAISED,
                                       command = self._deck_button_callback)
         self._deck_button.pack(padx = 10)
-        # self._deck_button.place(relx = 0.05, rely = 0, anchor = tk.NW)
 
-        # Create three cards Canvas
+        # Create Soros (three cards) Canvas
         self._soros_cards_canvas = tk.Canvas(master = self._soros_cards_frame,
                                 width = self._card_dimensions[0],
                                 height = self._card_dimensions[1])
         self._soros_cards_canvas.pack()
 
-        # Create Buttons
-
-        for i in range(8):
-            but = tk.Button(master = self._root,
-                            text = "Deck " + str(i + 1),
-                            width = 6, height = 1,
-                            command = lambda x = i : self._pick_suitDeck_callback(x))
-            but.place(relx = 0.1 * i, rely = 0.02, anchor = tk.NW)
-
+        # Create Deck Buttons
+        # for i in range(8):
+        #     but = tk.Button(master = self._suitDecks_button_frame,
+        #                     text = "Deck " + str(i + 1),
+        #                     width = 8, height = 1,
+        #                     command = lambda x = i : self._pick_suitDeck_callback(x))
+        #     # but.place(relx = 0.1 * i, rely = 0.0, anchor = tk.NW)
+        #     but.grid(row = 0, column = i, padx = 10, sticky=tk.NW)
 
     def _draw_first_cards(self, deck:Deck, n:int = 3, inv:bool = False):
         """Given a deck, it draws the first n cards.
@@ -113,8 +123,6 @@ class GameWindow:
             self.__soros.inverse()
             self.__deck = copy.deepcopy(self.__soros)
             self.__soros.empty()
-            self.deck_canvas.create_image(0, 0, anchor = tk.NW,
-                                     image = self._card_images["Blue"])
             self._deck_button.configure(image = self._card_images["Blue"])
             
         # Place cards in soros
@@ -123,13 +131,11 @@ class GameWindow:
 
             if (not isinstance(card, Card)):
                 print("End of deck")
-                self.deck_canvas.create_image(0, 0, anchor = tk.NW,
-                                              image = self._card_images["Blank"])
                 self._deck_button.configure(image = self._card_images["Blank"])
-                break # for loop
+                break
             else:
                 self.__soros.push(card.rank(), card.suit())
-        print("Soros = \n", self.__soros)
+        
         # Draw soros top three with the third card on top 
         self._draw_first_cards(deck = self.__soros, inv = True)
                 
@@ -146,15 +152,14 @@ class GameWindow:
             print("ERROR: Unable to handle this move")
             return
         
-        self.draw_suitDeck_card(deck_id = deck_id, card = moving_card,
-                                i = self.__suit_decks[deck_id].nCards() - 1)
+        self.draw_suitDeck_card(deck_id, moving_card)
         
         self._draw_first_cards(deck = self.__soros, inv = True)
 
     # TODO add a method to draw soros
 
     def _load_cards(self, dim):
-        """ Load the cards and resize them with the given dimensions dim"""
+        """ Load the cards and resize them with the dimensions given."""
         # Load Deck
         for fname in os.listdir(self._card_img_folder):
             img = Image.open(os.path.join(self._card_img_folder ,fname))
@@ -173,29 +178,16 @@ class GameWindow:
         img = img.resize(dim)
         self._card_images["Blue"] = ImageTk.PhotoImage(img)
 
-    def draw_suitDeck_card(self, deck_id:int, card:Card, i:int):
+    def draw_suitDeck_card(self, deck_id:int, card:Card):
+        """Add a card on the SuitDeck Canvas vertically."""
         card_img = self._card_images[card.id()]        
-        overlap_images(self._all_SuitDeck_canvas[deck_id], card_img, 0, 35, i)
+        overlap_images(self._all_SuitDeck_canvas[deck_id], card_img, 0, 35,
+                       self.__suit_decks[deck_id].nCards() - 1)
 
     def draw(self):
         """Draw window"""
         self._root.mainloop()
 
-
-# Helper functions
-def find_card(cardname:str):
-    """
-    Finds the card with the cardname given and returns
-    the image object for Tkinter frame, otherwise returns None.
-    """
-    try:
-        img = Image.open(cardname)
-        img = img.resize((100, 130))
-    except:
-        print("Error")
-        return None
-
-    return ImageTk.PhotoImage(img)
 
 def overlap_images(canvas, img, overlap_x, overlap_y, n:int):
     """Insert the n-th image (counting starts from 0) on a canvas.
