@@ -51,3 +51,10 @@
   - draw_card() deleted
   - Shuffle button tests with self.__deck 
 ------------------------------------------------------------------
+15/02/2024
+- In Window.py
+  - Modify init to take a deck as an arguments
+  - _draw_first_cards() modified with inv argument. This is useful for
+    soros where we need to print the top three elements in reverse order
+    BE VERY CAREFUL WITH THE ORDER OF THE CARDS
+  - Add Buttons and Button commands

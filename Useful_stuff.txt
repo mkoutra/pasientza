@@ -58,3 +58,6 @@ I'm trying to save some of the stuff I've learned while doing this.
 
 - Geometry manangers in tkinter (Sticky used in grid)
   https://www.studytonight.com/tkinter/python-tkinter-geometry-manager
+
+- Button commands with arguments using lambda function
+  https://stackoverflow.com/questions/58528462/tkinter-create-multiple-buttons-in-a-loop-and-change-text-of-clicked-ones

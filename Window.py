@@ -5,9 +5,17 @@ from PIL import Image, ImageTk
 
 from Cards import Card, Deck, SuitDeck
 import random
+import copy
 
 class GameWindow:
-    def __init__(self):
+    def __init__(self, deck):
+        # Create decks needed to play the game
+        self.__deck = deck
+        print("Initial Deck\n", self.__deck)
+        self.__soros = Deck(full = False)   # Cards removed from deck
+        self.__suit_decks:list = [SuitDeck() for _ in range(8)]
+        self.__suit_decks_sizes:list = [-1 for _ in range(8)] # Number of cards in suitDecks
+
         # Window configuration
         self._win_dimensions = (1024, 800)
         self._background = "darkgreen"
@@ -16,11 +24,6 @@ class GameWindow:
         self._card_img_folder = os.path.join("imgs", "card_imgs")
         self._card_dimensions = (100, 130)  # Card configuration
         self._card_images:dict = {}         # Card id, i.e. "10s" to card image
-
-        # Testing Deck
-        random.seed(100)
-        self.__deck = Deck()
-        print(self.__deck)
 
         self._all_SuitDeck_canvas:list = [] # SuitDeck canvas
 
@@ -42,6 +45,7 @@ class GameWindow:
         self._soros_cards_frame.place(relx = .2, rely = .75, anchor = tk.NW)
 
         self._load_cards(dim = self._card_dimensions) # Load Playing Cards
+
 
         # Create the 8 SuitDecks with Blank Images and place them on frame.
         for i in range(8):
@@ -69,31 +73,82 @@ class GameWindow:
         self._soros_cards_canvas.pack()
 
         # Create Buttons
-        self._shuffle_button = tk.Button(master = self._deck_frame,
-                                         text = "Shuffle", width = 8, height = 1,
-                                         command = self._test_button)
+
+        for i in range(8):
+            but = tk.Button(master = self._root,
+                            text = "Button " + str(i),
+                            width = 6, height = 1,
+                            command = lambda x=i : self._pick_suitDeck_button(x))
+            but.place(relx = 0.12 + 0.1 * i, rely = .95, anchor = tk.NW)
+
+        self._deck_button = tk.Button(master = self._deck_frame,
+                                         text = "Draw", width = 8, height = 1,
+                                         command = self._deck_button)
         
-        self._shuffle_button.pack()
+        self._deck_button.pack()
 
 
-    def _draw_first_cards(self, deck:Deck, n:int = 3):
+    def _draw_first_cards(self, deck:Deck, n:int = 3, inv:bool = False):
         """Given a deck, it draws the first n cards.
-        n: int, default value is 3 """
+        n: int, default value is 3.
+        inv: bool, if true prints the top n cards in reverse order
+        (useful for soros) """
         x_overlap = 20
         y_overlap = 0
 
-        top_cards = deck.first_cards(n)    # First n cards
+        # First n cards. (top_cards[0] is the deck's top card)
+        top_cards = deck.first_cards(n)
+        
+        if (inv == True): top_cards.reverse()
 
         for i, card in enumerate(top_cards):
             card_img = self._card_images[card.id()]
             overlap_images(self._soros_cards_canvas, card_img,
                            x_overlap, y_overlap, i)
 
-    def _test_button(self):
-        # print("Button Pressed")
-        for _ in range(3): self.__deck.pop()
-        self._draw_first_cards(self.__deck)
+    def _deck_button(self):
+        print("Deck Button Pressed")
+        if (self.__deck.isEmpty() == True):
+            self.__soros.inverse()
+            self.__deck = copy.deepcopy(self.__soros)
+            self.__soros.empty()
+            
+        # Place cards in soros
+        for _ in range(3): 
+            card = self.__deck.pop()
 
+            if (not isinstance(card, Card)):
+                print("End of deck")
+                break # for loop
+            else:
+                self.__soros.push(card.rank(), card.suit())
+        print("Soros = \n", self.__soros)
+        # Draw soros top three with the third card on top 
+        self._draw_first_cards(deck = self.__soros, inv = True)
+                
+
+    def _pick_suitDeck_button(self, deck_id:int):
+        print(f"Button {deck_id} pressed")
+        # TODO cover the case where the card should not be moved
+        moving_card = self.__soros.pop()
+        
+        if (isinstance(moving_card, Card) == False): return
+        try:
+            self.__suit_decks[deck_id].push(moving_card.rank(), moving_card.suit())
+        except:
+            self.__soros.push(moving_card.rank(), moving_card.suit())
+            print("ERROR: Unable to handle this move")
+            return
+        
+        # TODO replace it with a suitDeck method of size
+        self.__suit_decks_sizes[deck_id] += 1
+        
+        self.draw_suitDeck_card(deck_id = deck_id, card = moving_card,
+                                i = self.__suit_decks_sizes[deck_id])
+        
+        self._draw_first_cards(deck = self.__soros, inv = True)
+
+    # TODO add a method to draw soros
 
     def _load_cards(self, dim):
         """ Load the cards and resize them with the given dimensions dim"""
@@ -153,35 +208,9 @@ def overlap_images(canvas, img, overlap_x, overlap_y, n:int):
     canvas.create_image(n * overlap_x, n * overlap_y, anchor = tk.NW, image = img)
 
 if __name__ == "__main__":
-    c1 = Card('10', 's')
-    c2 = Card('8', 'd')
-    c3 = Card('A', 's')
+    random.seed(100)
+    d = Deck()
 
-    # random.seed(100)
-    # d = Deck()
-    win = GameWindow()
+    win = GameWindow(d)
 
-    # # win.draw_suitDeck_card(0, c1, 0)
-    # # win.draw_suitDeck_card(0, c2, 1)
-    # # win.draw_suitDeck_card(0, c3, 2)
-    # for i in range(13):
-    #     win.draw_suitDeck_card(0, c3, i)
-
-    # print("Full ", d)
-    # # win._draw_three(d)
-
-    # print("Remove three ", d)
-    # for _ in range(3):
-    #     d.pop()
-    # win._draw_first_cards(d)
-    # win.draw_suitDeck_card(1, c3, 0)
-    # win.draw_suitDeck_card(3, c2, 0)
-    # win.draw_suitDeck_card(3, c1, 1)
-
-    # win.draw_deck()
-    # k = 0
-    # while (True):
-        # xarti = input("xarti: ")
-        # win.draw_card(xarti + ".png", k, k)
-        # k += 1
     win.draw()
