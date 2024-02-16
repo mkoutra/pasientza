@@ -16,17 +16,7 @@
 
 Make some arguments optional in the Window class.
 
-Fix image folder name in Window class.
-
-Improve _load_card
-
-Create the three cards graph
-
-Change top in deck to take input an integer and return the first n.
-
 WRITE DOCUMENTATION AND EXPLANATIONS ABOUT THE ORDER OF THE CARDS
-
-Rename empty to makeempty() in Deck
 
 how to make window resizable, dynamic
 
@@ -45,5 +35,7 @@ probably change push() to take a Card object as argument
 Restart button
 
 Check window with 13 cards
+
+Pop up window on winning
 
 OPTIMIZATION because it gets heavier as more cards are placed on window

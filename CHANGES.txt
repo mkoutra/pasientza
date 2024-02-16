@@ -68,4 +68,11 @@
   - Add Blank card in soros at the beginning of the game.
 - In Card.py
   - rename first_cards() to top_cards()
+
+16/02/2024
+- In Window.py
+  - In _draw_top_cards() cover the case where the deck given is empty,
+    i.e. when you won the game or when soros has no more cards.
+  - Rename _load_cards() to _load_images().
   
+- In Cards rename empty() to makeEmpty()

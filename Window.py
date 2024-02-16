@@ -20,6 +20,7 @@ class GameWindow:
         self._background = "seagreen4"
         self._title = "Pasientza"
 
+        # Images info
         self._img_folder = "imgs"
         self._card_img_folder = "card_imgs"
         self._card_dimensions = (100, 130)
@@ -42,14 +43,15 @@ class GameWindow:
         self._deck_frame.place(relx = 0.4, rely = .75, anchor = tk.NW)
         self._soros_cards_frame.place(relx = 0.4 + .15, rely = .75, anchor = tk.NW)
 
-        self._load_cards(dim = self._card_dimensions) # Load Playing Cards
+        self._load_images(dim = self._card_dimensions) # Load Playing Cards
 
         # Create the 8 SuitDecks with the corresponding buttons.
         self._all_SuitDeck_canvas:list = [] # SuitDeck canvas
 
         for i in range(8):
             # Create frame to store canvas and button
-            suitDeck_frame = tk.Frame(master = self._suitDecks_frame, bg = self._background)
+            suitDeck_frame = tk.Frame(master = self._suitDecks_frame,
+                                      bg = self._background)
 
             # Create deck button
             deck_but = tk.Button(master = suitDeck_frame,
@@ -57,6 +59,7 @@ class GameWindow:
                 width = 8, height = 1,
                 background = "gray85",
                 activebackground = "gray",
+                activeforeground = "white",
                 command = lambda x = i : self._pick_suitDeck_callback(x))
             
             # Create Canvas
@@ -67,13 +70,14 @@ class GameWindow:
                               image = self._card_images["Blank"])
             self._all_SuitDeck_canvas.append(canv)
 
-            suitDeck_frame.grid(row = 0, column = i, padx = 10, sticky=tk.NW)            
+            suitDeck_frame.grid(row = 0, column = i, padx = 10, sticky=tk.NW)       
             deck_but.pack(pady = 5)
             canv.pack(pady = 5)
 
         # Create Deck Button
         self._deck_button = tk.Button(master = self._deck_frame,
                                       image = self._card_images["Blue"],
+                                      activebackground = "gray",
                                       relief = tk.RAISED,
                                       command = self._deck_button_callback)
         self._deck_button.pack(padx = 10)
@@ -86,30 +90,14 @@ class GameWindow:
         self._soros_cards_canvas.create_image(0, 0, anchor = tk.NW,
                                               image = self._card_images["Blank"])
 
-    def _draw_top_cards(self, deck:Deck, n:int = 3, inv:bool = False):
-        """Given a deck, it draws the first n cards.
-        n: int, default value is 3.
-        inv: bool, if true prints the top n cards in reverse order
-        (useful for soros) """
-        x_overlap = 20
-        y_overlap = 0
-
-        # First n cards. (top_cards[0] is the deck's top card)
-        top_cards = deck.top_cards(n)
-        
-        if (inv == True): top_cards.reverse()
-
-        for i, card in enumerate(top_cards):
-            card_img = self._card_images[card.id()]
-            overlap_images(self._soros_cards_canvas, card_img,
-                           x_overlap, y_overlap, i)
+    # ---------------------------- BUTTON CALLBACKS ---------------------------
 
     def _deck_button_callback(self):
         # If deck is empty make soros the new deck and redraw Blue card.
         if (self.__deck.isEmpty() == True):
             self.__soros.inverse()
             self.__deck = copy.deepcopy(self.__soros)
-            self.__soros.empty()
+            self.__soros.makeEmpty()
 
             self._deck_button.configure(image = self._card_images["Blue"])
             
@@ -126,7 +114,7 @@ class GameWindow:
         
         # Draw soros top three with the third card on top 
         self._draw_top_cards(deck = self.__soros, inv = True)
-                
+
     def _pick_suitDeck_callback(self, deck_id:int):
         moving_card = self.__soros.pop()
         
@@ -142,13 +130,15 @@ class GameWindow:
         
         self._draw_top_cards(deck = self.__soros, inv = True)
 
-    # TODO add a method to draw soros
+    # ------------------------------ LOAD IMAGES ------------------------------
 
-    def _load_cards(self, dim):
-        """ Load the cards and resize them with the dimensions given."""
+    def _load_images(self, dim):
+        """ Load cards, blank image and blue card and
+        resize them with the dimensions given."""
         # Load Deck
         for fname in os.listdir(os.path.join(self._img_folder, self._card_img_folder)):
-            img = Image.open(os.path.join(self._img_folder, self._card_img_folder, fname))
+            img = Image.open(os.path.join(self._img_folder, 
+                                          self._card_img_folder, fname))
             img = img.resize(dim)
 
             card_name = fname.strip(".png")
@@ -163,6 +153,33 @@ class GameWindow:
         img = Image.open(os.path.join(self._img_folder ,"Blue_playing_card.jpg"))
         img = img.resize(dim)
         self._card_images["Blue"] = ImageTk.PhotoImage(img)
+
+    # ------------------------------- DRAWING ---------------------------------
+
+    # TODO add a method to draw soros
+
+    def _draw_top_cards(self, deck:Deck, n:int = 3, inv:bool = False):
+        """Given a deck, it draws the first n cards.
+        n: int, default value is 3.
+        inv: bool, if true prints the top n cards in reverse order
+        (useful for soros) """
+        x_overlap = 20
+        y_overlap = 0
+
+        # First n cards. (top_cards[0] is the deck's top card)
+        top_cards = deck.top_cards(n)
+        
+        # When deck is Empty draw blank card
+        if (deck.isEmpty()):
+            self._soros_cards_canvas.create_image(0, 0, anchor = tk.NW,
+                                                  image = self._card_images["Blank"])
+        
+        if (inv == True): top_cards.reverse()
+
+        for i, card in enumerate(top_cards):
+            card_img = self._card_images[card.id()]
+            overlap_images(self._soros_cards_canvas, card_img,
+                           x_overlap, y_overlap, i)
 
     def draw_suitDeck_card(self, deck_id:int, card:Card):
         """Add a card on the SuitDeck Canvas vertically."""
@@ -186,7 +203,7 @@ def overlap_images(canvas, img, overlap_x, overlap_y, n:int):
 
     # Draw image starting at position (n * overlap_x, n * overlap_y)
     # Anchor point is the axis origin
-    canvas.create_image(n * overlap_x, n * overlap_y, anchor = tk.NW, image = img)
+    canvas.create_image(n*overlap_x, n*overlap_y, anchor = tk.NW, image = img)
 
 if __name__ == "__main__":
     # random.seed(100)

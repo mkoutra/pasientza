@@ -150,7 +150,7 @@ class Deck:
             for rank in Card._allRanks:
                 self.push(rank, suit)
 
-    def empty(self):
+    def makeEmpty(self):
         """Remove all cards from deck"""
         self._deckCards = []
         self._removedCards = []
