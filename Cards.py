@@ -184,7 +184,7 @@ class Deck:
         # self._deckCards = self._deckCards[::-1]
         self._deckCards.reverse() 
 
-    def first_cards(self, n:int) -> List[Card]:
+    def top_cards(self, n:int) -> List[Card]:
         """Returns a list with the first n cards of the deck"""
         if (n < 0):
             raise AttributeError("Argument must be positive.")

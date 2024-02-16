@@ -30,4 +30,20 @@ Rename empty to makeempty() in Deck
 
 how to make window resizable, dynamic
 
-UNDO button
+Place UNDO button
+
+Start using branch
+
+Add binding keys
+
+Add log file
+
+Remove literals as much as possible
+
+probably change push() to take a Card object as argument
+
+Restart button
+
+Check window with 13 cards
+
+OPTIMIZATION because it gets heavier as more cards are placed on window

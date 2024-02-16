@@ -62,3 +62,10 @@
   - Made Deck a button.
   - Change draw_suitDeck_card
   - find_card() deleted
+  ---------------------------------
+  - Add self._imgs_folder, modify _load_cards()
+  - rename _draw_first_cards() to _draw_top_cards()
+  - Add Blank card in soros at the beginning of the game.
+- In Card.py
+  - rename first_cards() to top_cards()
+  
