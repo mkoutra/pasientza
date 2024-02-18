@@ -1,6 +1,5 @@
 # The window of the Pasientza game using tkinter.
 import os
-import random
 import copy
 import tkinter as tk
 from PIL import Image, ImageTk
