@@ -76,3 +76,16 @@
   - Rename _load_cards() to _load_images().
   
 - In Cards rename empty() to makeEmpty()
+
+19/02/2024 --> replay_button branch
+- In Window.py:
+  _draw_initial_state() method created
+- In Cards.py:
+  - In CardColor class:
+    - __del__() method added
+  - In Card class:
+    - __del__ method added
+  - In Deck class:
+    - Update contains() with a single line using any()
+    - Modify makeEmpty(). Now we use .clear() instead of = []
+    - Add __del__() method

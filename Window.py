@@ -40,16 +40,21 @@ class GameWindow:
                             + "x" + str(self._win_dimensions[1]))
 
         # Create Frames
-        self._suitDecks_frame = tk.Frame(master = self._root, bg = self._background)
-        self._deck_frame = tk.Frame(master = self._root, bg = self._background)
-        self._soros_cards_frame = tk.Frame(master = self._root, bg = self._background)
-        self._undo_frame = tk.Frame(master = self._root, bg = self._background) # Undo button
+        frames_configurations = {"master": self._root,
+                                 "bg": self._background}
+
+        self._suitDecks_frame = tk.Frame(**frames_configurations)
+        self._deck_frame = tk.Frame(**frames_configurations)
+        self._soros_cards_frame = tk.Frame(**frames_configurations)
+        self._undo_frame = tk.Frame(**frames_configurations)
+        self._replay_frame = tk.Frame(**frames_configurations)
 
         # Place frames on the root window
         self._suitDecks_frame.place(relx = 0.0, rely = 0.02, anchor = tk.NW)
         self._deck_frame.place(relx = 0.4, rely = .75, anchor = tk.NW)
         self._soros_cards_frame.place(relx = 0.4 + .15, rely = .75, anchor = tk.NW)
         self._undo_frame.place(relx = .85, rely = .9, anchor = tk.NW)
+        self._replay_frame.place(relx = .85, rely = .8, anchor = tk.NW)
 
         self._load_images(dim = self._card_dimensions) # Load Playing Cards
 
@@ -102,16 +107,26 @@ class GameWindow:
                                       width = 4, height = 1,
                                       **button_configuration,
                                       command = self._undo_callback)
-        self._undo_button.pack()
+        self._undo_button.pack(pady = 5)
         self._n_cards_removed_last_round = 0    # Number of cards removed from deck in last draw.
+
+        # Create Replay button
+        self._replay_button = tk.Button(master = self._replay_frame,
+                                        text = "New game",
+                                        width = 7, height = 1,
+                                        **button_configuration,
+                                        command = self._replay_callback)
+        self._replay_button.pack(pady = 5)
 
     # ---------------------------- BUTTON CALLBACKS ---------------------------
 
     def _deck_button_callback(self):
         self._undo_button.configure(command = self._undo_callback)
+
         # If deck is empty make soros the new deck and redraw Blue card.
         if (self.__deck.isEmpty() == True):
             self.__soros.inverse()
+            del self.__deck
             self.__deck = copy.deepcopy(self.__soros)
             self.__soros.makeEmpty()
 
@@ -178,6 +193,21 @@ class GameWindow:
             # Redraw soros
             self._draw_top_cards(deck = self.__soros, inv = True)
         
+    def _replay_callback(self):
+        # Remove cards from suitDecks
+        for i in range(8): self.__suit_decks[i].makeEmpty()
+        
+        # Remove all elements from deck and soros
+        del self.__deck
+        del self.__soros
+        self.__deck = Deck(full = True)
+        self.__soros = Deck(full = False)
+
+        self._n_cards_removed_last_round = 0
+        
+        # Draw decks in initial state
+        self._draw_initial_state()
+
     # ------------------------------ LOAD IMAGES ------------------------------
 
     def _load_images(self, dim):
@@ -203,6 +233,27 @@ class GameWindow:
         self._card_images["Blue"] = ImageTk.PhotoImage(img)
 
     # ------------------------------- DRAWING ---------------------------------
+
+    def _draw_initial_state(self):
+        """Draw the decks when the game starts."""
+        
+        blank_image = self._card_images["Blank"]    # Blank Image
+
+        # Draw the top of the deck button
+        self._deck_button.configure(image = self._card_images["Blue"])
+
+        # Draw blank card on soros
+        self._soros_cards_canvas.configure(width = self._card_dimensions[0],
+                                           height= self._card_dimensions[1])
+        self._soros_cards_canvas.create_image(0, 0, anchor = tk.NW,
+                                              image = blank_image)
+        
+        # Draw the blank card on every suitDeck
+        for i in range(8):
+            self._all_SuitDeck_canvas[i].configure(width = self._card_dimensions[0],
+                                                   height = self._card_dimensions[1])
+            self._all_SuitDeck_canvas[i].create_image(0, 0, anchor = tk.NW,
+                                                      image = blank_image)
 
     # TODO add a method to draw soros
 

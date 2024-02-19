@@ -61,3 +61,8 @@ I'm trying to save some of the stuff I've learned while doing this.
 
 - Button commands with arguments using lambda function
   https://stackoverflow.com/questions/58528462/tkinter-create-multiple-buttons-in-a-loop-and-change-text-of-clicked-ones
+
+- Memory leaks - del - .clear() method in lists
+  - https://realpython.com/python-del-statement/
+  - https://docs.python.org/3/tutorial/datastructures.html
+  - https://stackoverflow.com/questions/21514631/how-to-delete-an-instantiated-object-python
