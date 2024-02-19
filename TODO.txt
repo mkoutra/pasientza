@@ -39,3 +39,9 @@ Check window with 13 cards
 Pop up window on winning
 
 OPTIMIZATION because it gets heavier as more cards are placed on window
+
+Add destructors on Card and Deck classes
+
+CHECK FOR MEMORY LEAKS
+
+Make UNDO button gray and unreachable after first tap

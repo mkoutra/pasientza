@@ -26,8 +26,12 @@ class CardColor:
         else: raise Exception("Invalid color")
     
     def __copy__(self):
-        return CardColor(self.c) 
+        return CardColor(self.c)
     
+    def __del__(self):
+        del self.c
+        del self._color
+
 
 class Card:
     """Card representation"""
@@ -96,6 +100,13 @@ class Card:
     
     def __copy__(self):
         return Card(self.rank(), self.suit())
+    
+    def __del__(self):
+        del self._rank
+        del self._suit
+        del self._color
+        del self._value
+        del self._symbol
 
 
 class Deck:
@@ -115,10 +126,7 @@ class Deck:
         """
         Returns true if card with rank rank and suit suit is inside the deck
         """
-        for card in self._deckCards:
-            if (card.rank() == rank and card.suit() == suit):
-                return True
-        return False
+        return any(card.rank() == rank and card.suit() == suit for card in self._deckCards)
     
     def push(self, rank:str, suit:str) -> None:
         """ Place a card at the top of the deck. """
@@ -152,8 +160,8 @@ class Deck:
 
     def makeEmpty(self):
         """Remove all cards from deck"""
-        self._deckCards = []
-        self._removedCards = []
+        self._deckCards.clear()
+        self._removedCards.clear()
         self._nCards = 0
 
     def restore(self):
@@ -221,6 +229,13 @@ class Deck:
         copy_instance._removedCards = copy.deepcopy(self._removedCards)
         copy_instance._nCards = self._nCards
         return copy_instance
+    
+    def __del__(self):
+        self._deckCards.clear()
+        self._removedCards.clear()
+        del self._deckCards
+        del self._removedCards
+        del self._nCards
 
 class SuitDeck(Deck):
     """A specific kind of deck used to store cards only of the same suit."""
@@ -265,49 +280,3 @@ class SuitDeck(Deck):
     def isFull(self):
         if (self.nCards() == 13): return True
         return False
-    
-
-if __name__ == "__main__":
-    # print(10*'-', "Testing", 10*'-')
-    # c1 = Card('A', 'h')
-    # c2 = Card('3', 'd')
-
-    # print(c1, c2)
-    # print("Id = ", c2.id())
-    # print("Same cards") if (c1 == c2) else print("Not same cards")
-    # print(c1.color(), c1.rank(), c1.suit(), c1.value(), c1.symbol())
-
-    # if (c1.color() == c2.color()): print("Same color\n")
-    # else: print("Not same color")
-
-    # print("Initial Deck")
-    # deck1 = Deck()
-    # print(deck1)
-
-    # print("\nPop the first 51 cards")
-    # for _ in range(51): deck1.pop()
-
-    # print(deck1)
-
-    # print("\nPop the last card")
-    # deck1.pop()
-
-    # print(deck1)
-    
-    # if (deck1.isEmpty()): print("Empty", deck1.nCards())
-    # else: print("Non empty")
-    
-    # #deck1.push("4", 's')
-
-    # print("\nRestore")
-    # deck1.restore()
-    # print(deck1)
-
-    # print("Number of cards", deck1.nCards())
-    specific_deck = SuitDeck()
-    specific_deck.push('K', 'c')
-    specific_deck.push('Q', 'c')
-    specific_deck.push('11', 'c')
-    print(specific_deck._deckCards)
-
-    print(specific_deck.nCards())
