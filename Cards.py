@@ -153,10 +153,10 @@ class Deck:
 
     def __init__(self, full = True, deck_size = 52):
         """full: optional, True if deck contains 52 cards"""
-        self._deck_cards:list = []      # Cards on the deck. Top elem is -1
-        self._removed_cards:list = []   # Cards no longer on the deck
-        self._number_of_cards = 0       # Number of cards on the deck
-        self._deck_size = deck_size     # Number of cards on a full deck
+        self._deck_cards:List[Card] = []    # Cards on the deck.
+        self._removed_cards:List[Card] = [] # Cards no longer on the deck
+        self._number_of_cards = 0           # Number of cards on the deck
+        self._deck_size = deck_size         # Number of cards on a full deck
 
         if full:
             self.fill_normal_deck()     # Fill deck with the 52 cards
@@ -166,29 +166,30 @@ class Deck:
         """Returns the number of cards contained on a full deck."""
         return self._deck_size
 
-    def contains(self, rank:str, suit:str) -> bool:
+    def contains(self, card: Card) -> bool:
         """Returns True if the card with the rank and the suit
         given is inside the deck.
         """
         for deck_card in self._deck_cards:
-            if deck_card.rank() == rank and deck_card.suit() == suit:
+            if (deck_card.rank() == card.rank() and
+                    deck_card.suit() == card.suit()):
                 return True
         return False
 
-    def push(self, rank:str, suit:str) -> None:
+    def push(self, card: Card) -> None:
         """ Place a playing card with the rank and the suit given
         at the top of the deck.
         """
         # NOTE: Top card is placed in position -1 inside lists.
 
-        if self.contains(rank, suit):
-            raise Exception(f"Card {rank, suit} is already inside.")
+        if self.contains(card):
+            raise Exception(f"Card {card} is already inside the deck.")
 
         if self._number_of_cards < self._deck_size:
-            self._deck_cards.append(Card(rank,  suit))
+            self._deck_cards.append(card)
             self._number_of_cards += 1
         else:
-            raise Exception(f"Cannot push {rank, suit}. Deck is full.")
+            raise Exception(f"Cannot push {card}. Deck is full.")
 
     def pop(self) -> Card:
         """Removes and returns a card from the top of the deck,
@@ -215,7 +216,7 @@ class Deck:
         """
         for suit in Deck._suitToSymbol:
             for rank in Deck._allRanks:
-                self.push(rank, suit)
+                self.push(Card(rank, suit))
 
     def make_empty(self) -> None:
         """Remove all cards from deck"""
@@ -324,31 +325,28 @@ class SuitDeck(Deck):
         """Returns the suit of the suitDeck"""
         return self._deck_suit
 
-    def push(self, rank:str, suit:str) -> None:
+    def push(self, card: Card) -> None:
         # Deck is full
         if self.is_full():
             raise Exception("SuitDeck is full.")
 
         # If SuitDeck is empty allow only K or A to be inserted.
         if self.is_empty():
-            if rank.upper() not in "KA":
-                raise Exception(f"SuitDeck can't start with {rank}.")
+            if card.rank().upper() not in "KA":
+                raise Exception(f"SuitDeck can't start with {card.rank()}.")
 
-            self._deck_suit = suit
-            self._deck_cards.append(Card(rank,  suit))
+            self._deck_suit = card.suit()
+            self._deck_cards.append(card)
             self._number_of_cards += 1
         else:
-            if self._deck_suit != suit:
+            if self._deck_suit != card.suit():
                 raise Exception("Card's suit does not match deck's suit.")
 
-            # New card to insert on the deck
-            new_card = Card(rank, suit)
-
             # Insert card only if it is in the correct order
-            if abs(self.top().value() - new_card.value()) != 1:
-                raise Exception(f"Card {rank, suit} is not in correct order.")
+            if abs(self.top().value() - card.value()) != 1:
+                raise Exception(f"Card {card} is not in correct order.")
 
-            self._deck_cards.append(new_card)
+            self._deck_cards.append(card)
             self._number_of_cards += 1
 
 if __name__ == "__main__":
@@ -359,12 +357,12 @@ if __name__ == "__main__":
     print(c1)
     print(d1)
     d1.shuffle()
-    print("\n\n",d1)
-    print(d1.contains('3', 's'))
+    print("\n\n",d1, d1.number_of_cards())
+    print(d1.contains(Card('3', 's')))
 
     sd1 = SuitDeck()
 
-    sd1.push('A', 'd')
-    sd1.push('2', 'd')
-    sd1.push('3', 'd')
-    print(sd1)
+    sd1.push(Card('A', 'd'))
+    sd1.push(Card('2', 'd'))
+    sd1.push(Card('3', 'd'))
+    print(sd1, sd1.number_of_cards())
