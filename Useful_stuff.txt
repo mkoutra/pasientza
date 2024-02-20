@@ -68,3 +68,6 @@ I'm trying to save some of the stuff I've learned while doing this.
   - https://stackoverflow.com/questions/21514631/how-to-delete-an-instantiated-object-python
 
 https://tkinter-docs.readthedocs.io/en/latest/widgets/canvas.html
+
+- Pylint
+  https://pythonspeed.com/articles/pylint/
