@@ -89,3 +89,10 @@
     - Update contains() with a single line using any()
     - Modify makeEmpty(). Now we use .clear() instead of = []
     - Add __del__() method
+
+21/02/2024 --> lint_check
+MAJOR CHANGE:
+- canvas.delete() made everything smoother
+- in overlap_image() create_image and the change width and height of canvas
+- Create _draw_soros()
+- Change state of undo_button

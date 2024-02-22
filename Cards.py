@@ -32,7 +32,6 @@ class CardColor:
             return "Black"
         if self._color == 0:
             return "Red"
-        raise Exception("Invalid color")
 
     def __copy__(self):
         return CardColor(self._c)

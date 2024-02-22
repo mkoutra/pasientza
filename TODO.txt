@@ -11,18 +11,11 @@
   def contains(self, rank, suit) -> bool:
     return any(card.rank() == rank and card.suit() == suit for card in self._deckCards)
 
-- Fix naming conventions
-- In Card class maybe rename id() method
-
 Make some arguments optional in the Window class.
 
 WRITE DOCUMENTATION AND EXPLANATIONS ABOUT THE ORDER OF THE CARDS
 
 how to make window resizable, dynamic
-
-Place UNDO button
-
-Start using branch
 
 Add binding keys
 
@@ -30,18 +23,12 @@ Add log file
 
 Remove literals as much as possible
 
-probably change push() to take a Card object as argument
-
-Restart button
-
 Check window with 13 cards
 
 Pop up window on winning
 
-OPTIMIZATION because it gets heavier as more cards are placed on window
+Add documentation on Window and Card files
 
-Add destructors on Card and Deck classes
+Create a main file
 
-CHECK FOR MEMORY LEAKS
-
-Make UNDO button gray and unreachable after first tap
+Write an exception class
