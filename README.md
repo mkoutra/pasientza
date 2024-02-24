@@ -10,8 +10,11 @@ Open a terminal windows instead the current directory and type:
 `pip install -r requirements.txt` 
 
 ## Game execution
-Open a terminal windows instead the current directory and type:
-`python3 Pasientza.py` or `python Pasientza.py` supposing you already have python 3 installed.
+After verifying you ave the requirements needed, open a terminal windows instead the current directory and type:
+
+`python3 Pasientza.py` or `python Pasientza.py` 
+
+supposing you already have python 3 in your PATH.
 
 ## Pasientza Game rules
 
@@ -39,6 +42,7 @@ Successfully place all the cards from the deck onto the eight stacks following t
 
 ## TODO
 
+- Replace "Deck i" buttons with clicks on stacks.
 - Make some arguments optional in the Window class.
 - Make window resizable, dynamic
 - Add binding keys on window
@@ -48,4 +52,4 @@ Successfully place all the cards from the deck onto the eight stacks following t
 - Get user info and save it to a db
 - Count games place and wins/loses ration.
 
-![alt text](imgs/manual_imgs/example1a.png)
+![alt text](imgs/manual_imgs/example2c.png)
