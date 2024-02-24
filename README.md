@@ -1,22 +1,22 @@
-# "Pasientza" (Solitaire) card game
-Pasientza is a simple solo card game requiring a standard deck of 52 cards.
+# "Pasientza" (Solitaire) Card Game
+Pasientza is a simple solo card game that requires a standard deck of 52 cards.
 
 ## Requirements
 - The game was built using python 3.8.10 but should work for all 3.0+ python versions.
 - PILLOW version 7.0.0
 
 Install the dependencies from `requirements.txt` using `pip`:
-Open a terminal windows instead the current directory and type:
+Open a terminal window in the current directory and type:
 `pip install -r requirements.txt` 
 
-## Game execution
-After verifying you ave the requirements needed, open a terminal windows instead the current directory and type:
+## How to run the game
+After verifying that you have the required dependencies, open a terminal window in the current directory and type:
 
 `python3 Pasientza.py` or `python Pasientza.py` 
 
-supposing you already have python 3 in your PATH.
+(assuming you already have Python 3 in your PATH).
 
-## Pasientza Game rules
+## Pasientza Game Rules
 
 ### Objective
 Successfully place all the cards from the deck onto the eight stacks following the order:
@@ -25,7 +25,7 @@ Successfully place all the cards from the deck onto the eight stacks following t
 
 ### Setup
 - Use a standard 52-card deck.
-- Create eight empty stacks for organizing the cards and an empty stack to keep the cards removed from deck, called "soros".
+- Create eight empty stacks for organizing the cards and an empty stack to keep the cards removed from the deck, called "soros".
 
 ### Gameplay
 1. Remove three cards from the deck and place them face up on the "soros".
@@ -41,15 +41,14 @@ Successfully place all the cards from the deck onto the eight stacks following t
 7. If you keep drawing cards, and nothing changes, start a new game.
 
 ## TODO
-
 - Replace "Deck i" buttons with clicks on stacks.
-- Make some arguments optional in the Window class.
-- Make window resizable, dynamic
-- Add binding keys on window
-- Add logs
-- Make a pop up window on winning
-- Write an exception class
-- Get user info and save it to a db
-- Count games place and wins/loses ration.
+- Make some arguments optional in the GameWindow class.
+- Make window resizable, dynamic.
+- Add binding keys to the window.
+- Add logs.
+- Make a pop-up window on winning.
+- Write an exception class.
+- Get user info and save it to a database.
+- Count games played and win/loss ratio.
 
 ![alt text](imgs/manual_imgs/example2c.png)
