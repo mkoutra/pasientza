@@ -91,8 +91,11 @@
     - Add __del__() method
 
 21/02/2024 --> lint_check
-MAJOR CHANGE:
-- canvas.delete() made everything smoother
-- in overlap_image() create_image and the change width and height of canvas
-- Create _draw_soros()
-- Change state of undo_button
+In Window.py (major changes):
+- Implementation of Canvas's method .delete('all') made everything smoother.
+  Also, in overlap_image() create_image() and configuration() swapped and
+  the performance was significantly improved.
+- Create _draw_soros().
+- Change the state of undo_button to tk.DISABLED when needed.
+- Use _draw_initial_state() in __init__.
+- __1init__ became more clear

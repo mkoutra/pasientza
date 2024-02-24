@@ -11,11 +11,12 @@ class GameWindow:
     """The Window for the Pasientza game."""
 
     def __init__(self, deck):
-        # Create decks needed to play the game
+        # Create decks variables needed to play the game
         self.__deck = deck
-        print("Initial Deck\n", self.__deck)
         self.__soros = Deck(full = False)   # Cards removed from deck
         self.__suit_decks:list = [SuitDeck() for _ in range(8)]
+        self._n_cards_removed_last_round = 0
+        self._n_suitdecks = 8
 
         # Window configuration
         self._win_dimensions = (980, 800)
@@ -66,7 +67,7 @@ class GameWindow:
         self._all_SuitDeck_canvas:list = []
         self._all_SuitDecks_buttons:list = []
 
-        for i in range(8):
+        for i in range(self._n_suitdecks):
             # Create frame to store canvas and button
             suitDeck_frame = tk.Frame(master = self._suitDecks_frame,
                                       bg = self._background)
@@ -114,13 +115,10 @@ class GameWindow:
         self._deck_button.pack(padx = 10)
         self._undo_button.pack(pady = 5)
         self._replay_button.pack(pady = 5)
-        for i in range(8):
+        for i in range(self._n_suitdecks):
             self._all_SuitDecks_buttons[i].pack(pady = 5)
             self._all_SuitDeck_canvas[i].pack(pady = 5)
-
-        # Number of cards removed from deck in last draw.
-        self._n_cards_removed_last_round = 0
-
+        
         # ------------------------------ Drawing ------------------------------
         self._draw_initial_state()
 
@@ -194,7 +192,7 @@ class GameWindow:
 
     def _replay_callback(self):
         # Remove cards from suitDecks
-        for i in range(8):
+        for i in range(self._n_suitdecks):
             self.__suit_decks[i].make_empty()
 
         # Remove all elements from deck and soros
@@ -248,7 +246,7 @@ class GameWindow:
         self._draw_soros()
 
         # Draw the blank card on every suitDeck
-        for i in range(8):
+        for i in range(self._n_suitdecks):
             self._all_SuitDeck_canvas[i].delete("all")
 
             self._all_SuitDeck_canvas[i].configure(
