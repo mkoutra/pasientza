@@ -3,7 +3,9 @@ Pasientza is a simple solo card game that requires a standard deck of 52 cards.
 
 ## Requirements
 - The game was built using python 3.8.10 but should work for all 3.0+ python versions.
-- PILLOW version 7.0.0
+- PILLOW
+
+Note: When installing Pillow keep in mind [this](https://pillow.readthedocs.io/en/stable/installation.html).
 
 Install the dependencies from `requirements.txt` using `pip`:
 Open a terminal window in the current directory and type:
