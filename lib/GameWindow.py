@@ -1,11 +1,13 @@
-# The window of the Pasientza game using tkinter.
+"""The class representing the window containing the Pasientza game."""
+
 import copy
 import os
-
 import tkinter as tk
+
 from PIL import Image, ImageTk
 
-from Cards import Card, Deck, SuitDeck
+from .Card import Card
+from .Decks import Deck, SuitDeck
 
 class GameWindow:
     """The Window for the Pasientza game."""

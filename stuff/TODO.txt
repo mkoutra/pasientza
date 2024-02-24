@@ -21,13 +21,7 @@ Add binding keys
 
 Add log file
 
-Remove literals as much as possible
-
-Check window with 13 cards
-
 Pop up window on winning
-
-Add documentation on Window and Card files
 
 Create a main file
 

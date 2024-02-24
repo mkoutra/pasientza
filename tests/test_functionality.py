@@ -1,8 +1,9 @@
-# Checking basic functionality of Pasientza
-from Cards import Card, Deck, SuitDeck
+# Checking basic functionality of Pasientza game
+from lib.Card import Card
+from lib.Decks import Deck, SuitDeck
 import copy
 
-N_SUIT_DECKS = 8    # Number of suit decks used in classic pasientza
+N_SUIT_DECKS = 8
 
 suit_decks = [SuitDeck() for _ in range(N_SUIT_DECKS)]
 
@@ -20,15 +21,14 @@ soros = Deck(full = False)  # Create empty deck
 print("Deck", deck, "\n")
 print("Soros", soros, "\n")
 
-while (not deck.isEmpty()):
+while not deck.is_empty():
     for _  in range(3):
         card = deck.pop()
 
-        if (not isinstance(card, Card)):
+        if not isinstance(card, Card):
             print("End of deck")
-            break # for loop
-        else:
-            soros.push(card.rank(), card.suit())
+            break
+        soros.push(card)
             
     # print("Deck", deck)
     print("Soros = ", soros)
@@ -38,29 +38,29 @@ while (not deck.isEmpty()):
     # It stops asking user for input in two cases:
     # (1): Soros gets empty
     # (2): User does not want to remove a card from soros
-    while (not soros.isEmpty()):
+    while (not soros.is_empty()):
         user_pick = int(input("\nSuitDeck # to insert top of deck: "))
 
         if 0 <= user_pick < 8:
             try:
                 # Card moving from soros to a suitDeck
                 moving_card = soros.pop()
-                suit_decks[user_pick].push(moving_card.rank(), moving_card.suit())
+                suit_decks[user_pick].push(moving_card)
                 print("Soros = ", soros)
                 print_suit_decks_top()
             except:
                 # Move card back to soros
                 print("Error occurred")
-                soros.push(moving_card.rank(), moving_card.suit())
+                soros.push(moving_card)
                 print("Soros = ", soros)
                 print_suit_decks_top()
         else: # User's pick was invalid
             break
 
-    if (deck.isEmpty()):
+    if deck.is_empty():
         print("Deck got empty, start again")
         soros.inverse()
         deck = copy.deepcopy(soros)
-        soros.empty()       # Remove all cards from soros
+        soros.make_empty()       # Remove all cards from soros
 
 print("SuitDecks:\n", suit_decks)
