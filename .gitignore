@@ -1,0 +1,5 @@
+# Ignore __pycache__ directory on every folder inside project directory
+**/__pycache__/
+
+# Ignore stuff directory
+stuff/
