@@ -1,4 +1,8 @@
 # Checking basic functionality of Pasientza game
+#----------------------------------
+#Michail E. Koutrakis
+#Github: https://github.com/mkoutra
+
 from lib.Card import Card
 from lib.Decks import Deck, SuitDeck
 import copy

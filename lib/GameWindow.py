@@ -1,4 +1,9 @@
-"""The class representing the window containing the Pasientza game."""
+"""The class representing the window containing the Pasientza game.
+
+----------------------------------
+Michail E. Koutrakis
+Github: https://github.com/mkoutra
+"""
 
 import copy
 import os

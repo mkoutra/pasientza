@@ -2,6 +2,10 @@
 52 playing card deck. Also, it contains a class SuitDeck inherited
 by Deck that is used to represent the eight, initially empty stacks
 used to store the cards removed from Deck and 'soros'.
+
+----------------------------------
+Michail E. Koutrakis
+Github: https://github.com/mkoutra
 """
 
 import copy

@@ -54,3 +54,7 @@ Successfully place all the cards from the deck onto the eight stacks following t
 - Count games played and win/loss ratio.
 
 ![alt text](imgs/manual_imgs/example2c.png)
+
+
+Michail E. Koutrakis
+Github: https://github.com/mkoutra

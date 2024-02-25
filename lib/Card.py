@@ -1,5 +1,9 @@
 """ This file contains the class used to represent playing cards
 and playing card colors.
+
+----------------------------------
+Michail E. Koutrakis
+Github: https://github.com/mkoutra
 """
 
 class CardColor:

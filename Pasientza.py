@@ -1,4 +1,8 @@
-"""Pasientza main function"""
+"""Pasientza main function
+----------------------------------
+Michail E. Koutrakis
+Github: https://github.com/mkoutra
+"""
 
 from lib.Decks import Deck
 from lib.GameWindow import GameWindow

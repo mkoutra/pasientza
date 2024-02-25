@@ -1,3 +1,7 @@
+#----------------------------------
+#Michail E. Koutrakis
+#Github: https://github.com/mkoutra
+
 from lib.Decks import Deck, SuitDeck
 from lib.Card import Card
 
