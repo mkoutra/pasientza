@@ -79,16 +79,19 @@ class GameWindow:
             suitDeck_frame = tk.Frame(master = self._suitDecks_frame,
                                       bg = self._background)
 
-            suitdeck_canv = tk.Canvas(master = suitDeck_frame)
+            suitdeck_canv = tk.Canvas(master = suitDeck_frame)#,
+                                    #   cursor="pirate")
+            suitdeck_canv.bind(sequence = "<Button-1>",
+                               func = lambda e, x = i : self._pick_suitDeck_callback(e, x))
 
-            suitDeck_but = tk.Button(
-                master = suitDeck_frame,
-                text = "Deck " + str(i + 1),
-                width = 8, height = 1,
-                **button_configuration,
-                command = lambda x = i : self._pick_suitDeck_callback(x))
+            # suitDeck_but = tk.Button(
+            #     master = suitDeck_frame,
+            #     text = "Deck " + str(i + 1),
+            #     width = 8, height = 1,
+            #     **button_configuration)#,
+            #     command = lambda x = i : self._pick_suitDeck_callback(x))
 
-            self._all_SuitDecks_buttons.append(suitDeck_but)
+            # self._all_SuitDecks_buttons.append(suitDeck_but)
             self._all_SuitDeck_canvas.append(suitdeck_canv)
 
             suitDeck_frame.grid(row = 0, column = i, padx = 10, sticky=tk.NW)
@@ -123,7 +126,7 @@ class GameWindow:
         self._undo_button.pack(pady = 5)
         self._replay_button.pack(pady = 5)
         for i in range(self._n_suitdecks):
-            self._all_SuitDecks_buttons[i].pack(pady = 5)
+            # self._all_SuitDecks_buttons[i].pack(pady = 5)
             self._all_SuitDeck_canvas[i].pack(pady = 5)
         
         # ------------------------------ Drawing ------------------------------
@@ -161,7 +164,8 @@ class GameWindow:
 
         self._draw_soros()
 
-    def _pick_suitDeck_callback(self, deck_id:int):
+    def _pick_suitDeck_callback(self, event, deck_id:int):
+        print(type(deck_id), deck_id)
         moving_card = self.__soros.pop()
 
         if not isinstance(moving_card, Card):
