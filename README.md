@@ -43,14 +43,11 @@ Successfully place all the cards from the deck onto the eight stacks following t
 7. If you keep drawing cards, and nothing changes, start a new game.
 
 ## TODO
-- Make some arguments optional in the GameWindow class.
-- Make window resizable, dynamic.
-- Add binding keys to the window.
 - Add logs.
-- Make a pop-up window on winning.
 - Write an exception class.
-- Get user info and save it to a database.
+- Add binding keys to the window.
 - Count games played and win/loss ratio.
+- Get user info and save it to a database.
 
 ## Images
 - A typical state of the game:

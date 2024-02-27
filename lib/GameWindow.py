@@ -50,6 +50,7 @@ class GameWindow:
         self._root.geometry(str(self._win_dimensions[0])
                             + "x"
                             + str(self._win_dimensions[1]))
+        self._root.resizable(width = False, height = False)
 
         # Create Frames
         frames_configurations = {"master": self._root,
@@ -168,8 +169,12 @@ class GameWindow:
         try:
             self.__suit_decks[deck_id].push(moving_card)
             self._undo_button.configure(state = tk.DISABLED)
-            self.draw_card_in_suitDeck(deck_id, moving_card)
+            self._draw_card_in_suitDeck(deck_id, moving_card)
             self._draw_soros()
+
+            # Check if the game is over with
+            if self.__soros.is_empty() and self.__deck.is_empty():
+                self._draw_winning_window()
         except:
             # Move card back to soros
             self.__soros.push(moving_card)
@@ -303,12 +308,27 @@ class GameWindow:
             overlap_images(self._soros_canvas, card_img,
                            x_overlap, y_overlap, i)
 
-    def draw_card_in_suitDeck(self, deck_id:int, card:Card):
+    def _draw_card_in_suitDeck(self, deck_id:int, card:Card):
         """Add a card on the SuitDeck Canvas vertically."""
         card_img = self._card_images[card.id()]
 
         overlap_images(self._all_SuitDeck_canvas[deck_id], card_img, 0, 35,
                        self.__suit_decks[deck_id].number_of_cards() - 1)
+
+    def _draw_winning_window(self):
+        winning_win = tk.Toplevel(master = self._root)
+        winning_win.title("YOU WIN !!!")
+        winning_win.resizable(False, False)
+
+        try:
+            win_img = Image.open(os.path.join(self._img_folder ,"win_photo.jpg"))
+            self._card_images["Win"] = ImageTk.PhotoImage(win_img)
+        except:
+            print("Problem loading win image.")
+
+        win_label = tk.Label(master = winning_win,
+                             image = self._card_images["Win"])
+        win_label.pack()
 
     def draw(self):
         """Draw window"""
@@ -331,5 +351,4 @@ if __name__ == "__main__":
     d = Deck()
 
     win = GameWindow(d)
-
     win.draw()
