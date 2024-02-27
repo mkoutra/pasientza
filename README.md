@@ -43,7 +43,6 @@ Successfully place all the cards from the deck onto the eight stacks following t
 7. If you keep drawing cards, and nothing changes, start a new game.
 
 ## TODO
-- Replace "Deck i" buttons with clicks on stacks.
 - Make some arguments optional in the GameWindow class.
 - Make window resizable, dynamic.
 - Add binding keys to the window.
@@ -53,8 +52,12 @@ Successfully place all the cards from the deck onto the eight stacks following t
 - Get user info and save it to a database.
 - Count games played and win/loss ratio.
 
-![alt text](imgs/manual_imgs/example2c.png)
+## Images
+- A typical state of the game:
+  ![alt text](imgs/manual_imgs/Pasientza.png)
 
+- When you win a game:
+  ![alt text](imgs/manual_imgs/Pasientza_win.png)
 
 Michail E. Koutrakis
 Github: https://github.com/mkoutra

@@ -3,3 +3,7 @@
 
 # Ignore stuff directory
 stuff/
+
+# Ignore some image files
+imgs/original/
+imgs/resized/
